@@ -2,6 +2,17 @@
 
 An open-source, self-hosted control panel for monitoring Linux and Windows servers. The Laravel application stores resource samples and exposes a small HTTPS API for outbound-only agents. It has no commercial subscription system and does not execute remote commands on monitored hosts.
 
+## Project purpose
+
+Dream Hosting Server Monitor is an independent, non-commercial open-source project for people who operate their own servers. The project is seeking community infrastructure sponsorship to host a small, read-only public demo and its documentation. Any public demo will use synthetic server data and will not expose administrator access or real host details.
+
+## Technology stack
+
+- **Control panel and API:** Laravel 13, PHP 8.3, Blade, Bootstrap 5 and Chart.js 4, built with Vite 8.
+- **Database:** MySQL 8.4 LTS.
+- **Monitoring agents:** Python for Linux and PowerShell for Windows.
+- **Agent communication:** HTTPS JSON API with one-time enrollment and revocable per-server credentials; agents make outbound connections only.
+
 ## MVP status
 
 | Capability | Status |

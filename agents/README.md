@@ -28,7 +28,11 @@ Requirements: Windows PowerShell 5.1 or newer, permission to query local CIM met
    .\agents\windows\install-service.ps1 -NoStart
    ```
 
-   The installer requires Administrator rights and the DPAPI-protected agent configuration created during enrollment. It registers `DreamHostingMonitorWeb`, `DreamHostingMonitorScheduler`, and `DreamHostingMonitorAgent` for automatic startup, runs them as `LocalService`, and configures service recovery. Default installation, agent-data, and log paths are on D:. The local Laravel server binds only to `127.0.0.1:8000`; do not expose it publicly. If the enrollment was done under a different Windows account, pass that account's protected config with `-SourceConfigPath`.
+   If an earlier installation attempt staged the files on D: but stopped before registering services, resume with `-ResumeExisting`. This validates the staged files and preserves the existing agent data and service configurations.
+
+   The installer requires Administrator rights and the DPAPI-protected agent configuration created during enrollment. It registers `DreamHostingMonitorWeb`, `DreamHostingMonitorScheduler`, and `DreamHostingMonitorAgent` for automatic startup, runs them as `LocalService`, and configures service recovery. The scheduler service runs `schedule:run` once per minute; scheduled maintenance callbacks execute in the Laravel process to avoid Windows service child-process working-directory failures. Default installation, agent-data, and log paths are on D:. The local Laravel server binds only to `127.0.0.1:8000`; do not expose it publicly. If the enrollment was done under a different Windows account, pass that account's protected config with `-SourceConfigPath`.
+
+   To update an already registered scheduler service to this loop, run `.\agents\windows\repair-scheduler-service.ps1` from an elevated PowerShell window. It backs up the current scheduler configuration on D:, updates only that service, and leaves the web, agent, MySQL, and database data untouched.
 
 6. Before starting the services, confirm `DreamHostingMySQL` is running. If it is stopped, start it from the elevated shell. Stop any existing foreground Laravel, scheduler, or agent processes so there is only one instance. Then start the services:
 
